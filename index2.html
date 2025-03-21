@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Phishing Detector</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, textarea { width: 80%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; cursor: pointer; }
+        .safe { color: green; font-weight: bold; }
+        .phishing { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Email Phishing Detector</h2>
+    <textarea id="emailContent" rows="5" placeholder="Paste your email content here..."></textarea><br>
+    <button onclick="checkPhishing()">Check for Phishing</button>
+    <p id="result"></p>
+
+    <script>
+        function checkPhishing() {
+            let emailText = document.getElementById("emailContent").value.toLowerCase();
+            let phishingIndicators = ["urgent", "verify", "limited time", "click here", "account locked", "password reset", "bank details", "congratulations"];
+            let suspiciousLinks = [/http:\/\//, /bit\.ly/, /tinyurl/];
+            
+            let foundIndicators = phishingIndicators.filter(word => emailText.includes(word));
+            let foundLinks = suspiciousLinks.filter(regex => regex.test(emailText));
+            
+            let result = document.getElementById("result");
+            
+            if (foundIndicators.length > 0 || foundLinks.length > 0) {
+                result.innerHTML = "⚠️ Potential Phishing Detected!";
+                result.className = "phishing";
+            } else {
+                result.innerHTML = "✅ Email Looks Safe!";
+                result.className = "safe";
+            }
+        }
+    </script>
+</body>
+</html>
